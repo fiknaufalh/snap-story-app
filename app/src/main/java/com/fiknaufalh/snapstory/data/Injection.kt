@@ -4,6 +4,7 @@ import android.content.Context
 import com.fiknaufalh.snapstory.data.pref.UserPreference
 import com.fiknaufalh.snapstory.data.pref.dataStore
 import com.fiknaufalh.snapstory.data.remote.retrofit.ApiConfig
+import com.fiknaufalh.snapstory.view.auth.UserRepository
 
 object Injection {
     fun provideRepository(context: Context): UserRepository {

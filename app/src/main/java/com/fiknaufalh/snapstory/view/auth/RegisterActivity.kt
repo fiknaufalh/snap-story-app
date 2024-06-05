@@ -28,6 +28,10 @@ class RegisterActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
+
+        viewModel.isLoading.observe(this) {
+            loading -> showLoading(loading)
+        }
     }
 
     private fun setupView() {
@@ -49,11 +53,10 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             val title = "Register"
-            var message = ""
 
             viewModel.register(name, email, password).observe(this) { response ->
                 Log.d("Register", response.toString())
-                message = if (response.error!!) {
+                val message = if (!response.error!!) {
                     "Akun berhasil dibuat! Silakan login."
                 } else {
                     "Akun belum berhasil dibuat! Silakan coba lagi."
@@ -107,6 +110,10 @@ class RegisterActivity : AppCompatActivity() {
             )
             startDelay = 100
         }.start()
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }
 
 }

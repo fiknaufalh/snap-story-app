@@ -1,4 +1,4 @@
-package com.fiknaufalh.snapstory.data
+package com.fiknaufalh.snapstory.view.auth
 
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.data.pref.UserPreference

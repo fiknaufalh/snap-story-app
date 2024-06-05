@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fiknaufalh.snapstory.data.Injection
-import com.fiknaufalh.snapstory.data.UserRepository
+import com.fiknaufalh.snapstory.view.auth.UserRepository
 import com.fiknaufalh.snapstory.view.auth.AuthViewModel
 import com.fiknaufalh.snapstory.view.main.MainViewModel
 

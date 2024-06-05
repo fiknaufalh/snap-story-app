@@ -37,6 +37,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.emailEditText.addTextChangedListener(textWatcher)
         binding.passwordEditText.addTextChangedListener(textWatcher)
+
+        viewModel.isLoading.observe(this) {
+            loading -> showLoading(loading)
+            Log.d("loading", loading.toString())
+        }
     }
 
     private val textWatcher = object: TextWatcher {
@@ -71,20 +76,30 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
-//            val password = binding.passwordEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
+            val title = "Login"
+            var message = ""
 
-            viewModel.saveSession(UserModel(email, "sample_token"))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
+            viewModel.login(email, password).observe(this) { response ->
+                Log.d("Login", response.toString())
+                if (!response.error!!) {
+                    message = "Login berhasil! Silakan masuk"
+                    viewModel.saveSession(UserModel(email, response.loginResult?.token.toString()))
+                } else {
+                    message = "Login gagal! Silakan coba lagi"
                 }
-                create()
-                show()
+                AlertDialog.Builder(this).apply {
+                    setTitle(title)
+                    setMessage(message)
+                    setPositiveButton("Ok") { _, _ ->
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                    create()
+                    show()
+                }
             }
         }
     }
@@ -121,6 +136,10 @@ class LoginActivity : AppCompatActivity() {
             )
             startDelay = 100
         }.start()
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }
 
 }
