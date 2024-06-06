@@ -7,4 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".view.detail.DetailActivity">
 
+    <ImageView
+        android:id="@+id/storyImage"
+        android:transitionName="storyImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:contentDescription="@string/image_of_story"
+        android:src="@color/navy"
+        app:layout_constraintBottom_toTopOf="@id/storyUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/storyUser"
+        android:transitionName="storyUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/poppins_bold_semi"
+        android:text="@string/user_name"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/storyImage"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/storyDesc"
+        android:transitionName="storyDesc"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_light"
+        android:text="@string/lorem_ipsum"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/storyUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

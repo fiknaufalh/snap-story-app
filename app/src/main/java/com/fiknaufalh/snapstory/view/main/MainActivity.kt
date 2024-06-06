@@ -12,6 +12,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fiknaufalh.snapstory.R
@@ -88,21 +90,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.logoutButton.setOnClickListener {
+        binding.ivLogout.setOnClickListener {
             viewModel.logout()
         }
     }
 
     private fun setStoryList(stories: StoryResponse) {
-        val adapter = StoryAdapter(onClickCard = {
-            Log.d("Masuk detail", "Masuk detail")
-            val intent = Intent(this@MainActivity, DetailActivity::class.java)
-            intent.putExtra(resources.getString(R.string.passing_name), it.name)
-            intent.putExtra(resources.getString(R.string.passing_desc), it.description)
-            intent.putExtra(resources.getString(R.string.passing_image), it.photoUrl)
-            startActivity(intent)
-        })
-
+        val adapter = StoryAdapter()
         adapter.submitList(stories.listStory)
         binding.rvStory.adapter = adapter
     }
