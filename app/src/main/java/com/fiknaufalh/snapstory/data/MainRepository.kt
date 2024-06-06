@@ -1,4 +1,4 @@
-package com.fiknaufalh.snapstory.view.auth
+package com.fiknaufalh.snapstory.data
 
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.data.pref.UserPreference
@@ -7,7 +7,7 @@ import com.fiknaufalh.snapstory.data.remote.responses.RegisterResponse
 import com.fiknaufalh.snapstory.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 
-class UserRepository private constructor(
+class MainRepository private constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
 ) {
@@ -32,15 +32,17 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
+    fun fetchStories() = apiService.getStories()
+
     companion object {
         @Volatile
-        private var instance: UserRepository? = null
+        private var instance: MainRepository? = null
         fun getInstance(
             userPreference: UserPreference,
             apiService: ApiService
-        ): UserRepository =
+        ): MainRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference, apiService)
+                instance ?: MainRepository(userPreference, apiService)
             }.also { instance = it }
     }
 }

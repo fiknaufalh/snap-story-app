@@ -3,12 +3,12 @@ package com.fiknaufalh.snapstory.utils
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.fiknaufalh.snapstory.data.Injection
-import com.fiknaufalh.snapstory.view.auth.UserRepository
+import com.fiknaufalh.snapstory.di.Injection
+import com.fiknaufalh.snapstory.data.MainRepository
 import com.fiknaufalh.snapstory.view.auth.AuthViewModel
 import com.fiknaufalh.snapstory.view.main.MainViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: MainRepository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

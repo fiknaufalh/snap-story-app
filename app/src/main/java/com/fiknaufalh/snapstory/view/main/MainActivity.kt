@@ -5,13 +5,21 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.fiknaufalh.snapstory.R
+import com.fiknaufalh.snapstory.adapters.StoryAdapter
+import com.fiknaufalh.snapstory.data.remote.responses.StoryResponse
 import com.fiknaufalh.snapstory.databinding.ActivityMainBinding
 import com.fiknaufalh.snapstory.utils.ViewModelFactory
+import com.fiknaufalh.snapstory.view.detail.DetailActivity
 import com.fiknaufalh.snapstory.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+        setErrorView(false)
+
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
@@ -32,9 +43,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val layoutManager = LinearLayoutManager(this)
+        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+
+        binding.rvStory.layoutManager = layoutManager
+        binding.rvStory.addItemDecoration(itemDecoration)
+
+        viewModel.stories.observe(this) {
+            stories -> setStoryList(stories)
+        }
+
+        viewModel.isLoading.observe(this) {
+            isLoading -> showLoading(isLoading)
+        }
+
+        viewModel.errorToast.observe(this) {
+                errorToast -> errorToast?.let {
+            if (errorToast) {
+                Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
+                viewModel.resetToast()
+            } else {
+                Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
+                viewModel.resetToast()
+                setErrorView(true)
+            }
+        }
+        }
+
         setupView()
         setupAction()
-        playAnimation()
     }
 
     private fun setupView() {
@@ -56,20 +93,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
+    private fun setStoryList(stories: StoryResponse) {
+        val adapter = StoryAdapter(onClickCard = {
+            Log.d("Masuk detail", "Masuk detail")
+            val intent = Intent(this@MainActivity, DetailActivity::class.java)
+            intent.putExtra(resources.getString(R.string.passing_name), it.name)
+            intent.putExtra(resources.getString(R.string.passing_desc), it.description)
+            intent.putExtra(resources.getString(R.string.passing_image), it.photoUrl)
+            startActivity(intent)
+        })
 
-        val name = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(100)
-        val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
-        val logout = ObjectAnimator.ofFloat(binding.logoutButton, View.ALPHA, 1f).setDuration(100)
+        adapter.submitList(stories.listStory)
+        binding.rvStory.adapter = adapter
+    }
 
-        AnimatorSet().apply {
-            playSequentially(name, message, logout)
-            startDelay = 100
-        }.start()
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun setErrorView(isError: Boolean) {
+        val isShow = if (isError) View.VISIBLE else View.GONE
+        binding.ivError.visibility = isShow
+        binding.tvError.visibility = isShow
+        binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
     }
 }
