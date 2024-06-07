@@ -14,6 +14,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.fiknaufalh.snapstory.R
 import com.fiknaufalh.snapstory.view.main.MainActivity
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.databinding.ActivityLoginBinding
@@ -83,15 +84,15 @@ class LoginActivity : AppCompatActivity() {
             viewModel.login(email, password).observe(this) { response ->
                 Log.d("Login", response.toString())
                 if (!response.error!!) {
-                    message = "Login berhasil! Silakan masuk"
+                    message = resources.getString(R.string.login_success)
                     viewModel.saveSession(UserModel(email, response.loginResult?.token.toString()))
                 } else {
-                    message = "Login gagal! Silakan coba lagi"
+                    message = resources.getString(R.string.login_failed)
                 }
                 AlertDialog.Builder(this).apply {
                     setTitle(title)
                     setMessage(message)
-                    setPositiveButton("Ok") { _, _ ->
+                    setPositiveButton("OK") { _, _ ->
                         val intent = Intent(context, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
@@ -112,8 +113,6 @@ class LoginActivity : AppCompatActivity() {
         }.start()
 
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
-        val message =
-            ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
         val emailTextView =
             ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
         val emailEditTextLayout =
@@ -127,7 +126,6 @@ class LoginActivity : AppCompatActivity() {
         AnimatorSet().apply {
             playSequentially(
                 title,
-                message,
                 emailTextView,
                 emailEditTextLayout,
                 passwordTextView,

@@ -2,15 +2,13 @@
     <string name="app_name">SnapStory</string>
     <string name="signup">Register</string>
     <string name="login">Login</string>
-    <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding aja!</string>
-    <string name="title_welcome_page">Selamat datang di Dicoding!</string>
-    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="message_welcome_page">Start capture your journey with us and transform ordinary moments into extraordinary memories. Get ready to explore and inspire with SnapStory!</string>
+    <string name="title_welcome_page">Welcome to SnapStory!</string>
+    <string name="title_signup_page">Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="message_login_page">Masukkan dulu datamu ya</string>
-    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
-    <string name="name">name</string>
-    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="title_login_page">Login</string>
+    <string name="name">Name</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Logout</string>
     <string name="login_email_hint">Enter your email</string>
@@ -30,4 +28,15 @@
     <string name="desc_hint">Type your caption</string>
     <string name="upload_image_preview">Upload Image Preview</string>
     <string name="add_button">Button for add story</string>
+    <string name="splash_description">Splash Screen</string>
+    <string name="snapstory_logo">SnapStory Logo</string>
+    <string name="register_name_hint">Enter your name</string>
+    <string name="retry">Retry</string>
+    <string name="login_success">Login successful. Welcome to the SnapStory!</string>
+    <string name="login_failed">Login failed. Please try again!</string>
+    <string name="register_success">Register successful. Please login to continue!</string>
+    <string name="register_failed">Register failed. Please try again!</string>
+    <string name="password_req">Password must not be less than 8 characters</string>
+    <string name="email_req">Email is not valid, use the correct format</string>
+    <string name="new_story">New Story</string>
 </resources>

@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchStories()
         viewModel.stories.observe(this) {
             stories -> setStoryList(stories)
+            if (stories.listStory.isEmpty()) {
+                setErrorView(true)
+            } else {
+                setErrorView(false)
+            }
         }
 
         viewModel.isLoading.observe(this) {
@@ -77,6 +82,11 @@ class MainActivity : AppCompatActivity() {
                     setErrorView(true)
                 }
             }
+        }
+
+        binding.btnRetry.setOnClickListener {
+            setErrorView(false)
+            viewModel.fetchStories()
         }
 
         setupView()
@@ -121,6 +131,7 @@ class MainActivity : AppCompatActivity() {
         val isShow = if (isError) View.VISIBLE else View.GONE
         binding.ivError.visibility = isShow
         binding.tvError.visibility = isShow
+        binding.btnRetry.visibility = isShow
         binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
     }
 }

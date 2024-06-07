@@ -11,6 +11,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.fiknaufalh.snapstory.R
 import com.fiknaufalh.snapstory.databinding.ActivityRegisterBinding
 import com.fiknaufalh.snapstory.utils.ViewModelFactory
 
@@ -57,14 +58,14 @@ class RegisterActivity : AppCompatActivity() {
             viewModel.register(name, email, password).observe(this) { response ->
                 Log.d("Register", response.toString())
                 val message = if (!response.error!!) {
-                    "Akun berhasil dibuat! Silakan login."
+                    resources.getString(R.string.register_success)
                 } else {
-                    "Akun belum berhasil dibuat! Silakan coba lagi."
+                    resources.getString(R.string.register_failed)
                 }
                 AlertDialog.Builder(this).apply {
                     setTitle(title)
                     setMessage(message)
-                    setPositiveButton("Ok") { _, _ ->
+                    setPositiveButton("OK") { _, _ ->
                         finish()
                     }
                     create()

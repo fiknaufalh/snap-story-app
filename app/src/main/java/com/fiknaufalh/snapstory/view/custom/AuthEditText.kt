@@ -33,13 +33,13 @@ class AuthEditText @JvmOverloads constructor(
 
                 if (id == R.id.passwordEditText) {
                     if (s.toString().length < 8) {
-                        setError("Password tidak boleh kurang dari 8 karakter", null)
+                        setError(resources.getString(R.string.password_req), null)
                     } else {
                         error = null
                     }
                 } else if (id == R.id.emailEditText) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                        setError("Email tidak valid", null)
+                        setError(resources.getString(R.string.email_req), null)
                     } else {
                         error = null
                     }

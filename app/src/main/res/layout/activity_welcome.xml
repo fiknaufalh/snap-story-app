@@ -5,17 +5,21 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".view.welcome.WelcomeActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="36dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image_welcome" />
+        app:srcCompat="@drawable/welcome_banner" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -26,7 +30,9 @@
         android:layout_marginEnd="32dp"
         android:alpha="0"
         android:text="@string/title_welcome_page"
-        android:textColor="@color/black"
+        android:gravity="center"
+        android:textColor="@color/navy"
+        android:fontFamily="@font/poppins_bold"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +51,8 @@
         android:alpha="0"
         android:text="@string/message_welcome_page"
         android:textColor="@color/navy"
+        android:fontFamily="@font/poppins_italic"
+        android:gravity="center"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -61,6 +69,7 @@
         android:layout_marginEnd="16dp"
         android:alpha="0"
         android:backgroundTint="@color/navy"
+        android:fontFamily="@font/poppins_regular"
         android:text="@string/login"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +85,7 @@
         android:layout_marginEnd="32dp"
         android:alpha="0"
         android:backgroundTint="@color/navy"
+        android:fontFamily="@font/poppins_regular"
         android:text="@string/signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
