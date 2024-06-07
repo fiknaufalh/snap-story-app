@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fiknaufalh.snapstory.data.MainRepository
+import com.fiknaufalh.snapstory.repositories.UserRepository
 import com.fiknaufalh.snapstory.data.remote.responses.FileUploadResponse
+import com.fiknaufalh.snapstory.repositories.StoryRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,7 +16,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-class UploadViewModel(private val repository: MainRepository) : ViewModel() {
+class UploadViewModel(private val repository: StoryRepository) : ViewModel() {
 
     fun uploadImage(imageFile: File, description: String): LiveData<FileUploadResponse> {
         val requestBody = description.toRequestBody("text/plain".toMediaType())

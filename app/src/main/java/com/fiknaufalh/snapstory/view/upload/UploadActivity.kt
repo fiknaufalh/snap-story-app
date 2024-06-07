@@ -25,7 +25,7 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUploadBinding
     private var currentImageUri: Uri? = null
     private val viewModel by viewModels<UploadViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, "story")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

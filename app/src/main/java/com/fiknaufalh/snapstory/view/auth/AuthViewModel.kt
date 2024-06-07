@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fiknaufalh.snapstory.data.MainRepository
+import com.fiknaufalh.snapstory.repositories.UserRepository
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.data.remote.responses.LoginResponse
 import com.fiknaufalh.snapstory.data.remote.responses.RegisterResponse
@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class AuthViewModel(private val repository: MainRepository) : ViewModel() {
+class AuthViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading

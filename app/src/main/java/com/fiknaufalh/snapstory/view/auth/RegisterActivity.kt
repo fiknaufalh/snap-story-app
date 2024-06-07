@@ -18,7 +18,7 @@ import com.fiknaufalh.snapstory.utils.ViewModelFactory
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel by viewModels<AuthViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, "user")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

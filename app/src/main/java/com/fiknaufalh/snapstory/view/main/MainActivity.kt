@@ -27,7 +27,7 @@ import com.fiknaufalh.snapstory.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, "story")
     }
     private lateinit var binding: ActivityMainBinding
 

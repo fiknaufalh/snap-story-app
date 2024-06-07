@@ -22,7 +22,7 @@ import com.fiknaufalh.snapstory.utils.ViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<AuthViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, "user")
     }
     private lateinit var binding: ActivityLoginBinding
 

@@ -23,6 +23,7 @@
         android:roundIcon="@mipmap/ic_snapstory_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SnapStory"
+        tools:remove="android:appComponentFactory"
         tools:targetApi="31">
         <activity
             android:name=".view.splash.SplashActivity"

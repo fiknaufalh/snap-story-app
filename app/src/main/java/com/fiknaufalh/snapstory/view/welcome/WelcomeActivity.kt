@@ -8,18 +8,32 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.fiknaufalh.snapstory.databinding.ActivityWelcomeBinding
+import com.fiknaufalh.snapstory.utils.ViewModelFactory
 import com.fiknaufalh.snapstory.view.auth.LoginActivity
 import com.fiknaufalh.snapstory.view.auth.RegisterActivity
+import com.fiknaufalh.snapstory.view.main.MainActivity
+import com.fiknaufalh.snapstory.view.main.MainViewModel
 
 class WelcomeActivity : AppCompatActivity() {
+    private val viewModel by viewModels<WelcomeViewModel> {
+        ViewModelFactory.getInstance(this, "user")
+    }
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.getSession().observe(this) { user ->
+            if (user.isLogin) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }
 
         setupView()
         setupAction()

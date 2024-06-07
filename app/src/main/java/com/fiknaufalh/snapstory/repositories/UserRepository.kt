@@ -1,26 +1,19 @@
-package com.fiknaufalh.snapstory.data
+package com.fiknaufalh.snapstory.repositories
 
-import androidx.lifecycle.liveData
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.data.pref.UserPreference
 import com.fiknaufalh.snapstory.data.remote.responses.FileUploadResponse
 import com.fiknaufalh.snapstory.data.remote.responses.LoginResponse
 import com.fiknaufalh.snapstory.data.remote.responses.RegisterResponse
 import com.fiknaufalh.snapstory.data.remote.retrofit.ApiService
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
-import java.io.File
 
-class MainRepository private constructor(
+class UserRepository private constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
-) {
+): Repository {
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
@@ -51,13 +44,13 @@ class MainRepository private constructor(
 
     companion object {
         @Volatile
-        private var instance: MainRepository? = null
+        private var instance: UserRepository? = null
         fun getInstance(
             userPreference: UserPreference,
             apiService: ApiService
-        ): MainRepository =
+        ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: MainRepository(userPreference, apiService)
+                instance ?: UserRepository(userPreference, apiService)
             }.also { instance = it }
     }
 }
