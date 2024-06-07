@@ -32,8 +32,8 @@ data class StoryItem(
 	val description: String? = null,
 
 	@field:SerializedName("lon")
-	val lon: Double? = null,
+	val lon: Double = 0.0,
 
 	@field:SerializedName("lat")
-	val lat: Double? = null
+	val lat: Double = 0.0
 )

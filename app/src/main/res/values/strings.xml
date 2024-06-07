@@ -39,4 +39,5 @@
     <string name="password_req">Password must not be less than 8 characters</string>
     <string name="email_req">Email is not valid, use the correct format</string>
     <string name="new_story">New Story</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

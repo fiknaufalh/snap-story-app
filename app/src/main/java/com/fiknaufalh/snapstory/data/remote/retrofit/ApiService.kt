@@ -29,10 +29,16 @@ interface ApiService {
     @GET("stories")
     fun getStories(): Call<StoryResponse>
 
+    @GET("stories")
+    fun getStoriesWithLocation(
+        @Query("location") location : Int = 1,
+    ): Call<StoryResponse>
+
     @Multipart
     @POST("stories")
     suspend fun uploadImage(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
     ): FileUploadResponse
+
 }

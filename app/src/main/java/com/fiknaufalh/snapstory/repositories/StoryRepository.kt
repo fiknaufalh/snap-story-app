@@ -29,6 +29,8 @@ class StoryRepository private constructor(
 
     fun fetchStories() = apiService.getStories()
 
+    fun fetchStoriesWithLocation() = apiService.getStoriesWithLocation()
+
     suspend fun uploadImage(multipartBody: MultipartBody.Part, description: RequestBody):
             FileUploadResponse {
         return apiService.uploadImage(multipartBody, description)

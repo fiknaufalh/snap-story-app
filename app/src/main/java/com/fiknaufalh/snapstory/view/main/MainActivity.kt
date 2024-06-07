@@ -22,6 +22,7 @@ import com.fiknaufalh.snapstory.data.remote.responses.StoryResponse
 import com.fiknaufalh.snapstory.databinding.ActivityMainBinding
 import com.fiknaufalh.snapstory.utils.ViewModelFactory
 import com.fiknaufalh.snapstory.view.detail.DetailActivity
+import com.fiknaufalh.snapstory.view.maps.MapsActivity
 import com.fiknaufalh.snapstory.view.upload.UploadActivity
 import com.fiknaufalh.snapstory.view.welcome.WelcomeActivity
 
@@ -54,6 +55,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ivMap.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
 

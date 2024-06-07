@@ -9,6 +9,7 @@ import com.fiknaufalh.snapstory.repositories.StoryRepository
 import com.fiknaufalh.snapstory.repositories.UserRepository
 import com.fiknaufalh.snapstory.view.auth.AuthViewModel
 import com.fiknaufalh.snapstory.view.main.MainViewModel
+import com.fiknaufalh.snapstory.view.maps.MapsViewModel
 import com.fiknaufalh.snapstory.view.upload.UploadViewModel
 import com.fiknaufalh.snapstory.view.welcome.WelcomeViewModel
 
@@ -28,6 +29,9 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
             }
             modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
                 WelcomeViewModel(repository as UserRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(repository as StoryRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
