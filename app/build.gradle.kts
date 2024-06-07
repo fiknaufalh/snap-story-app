@@ -68,5 +68,6 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.glide)
+    implementation(libs.androidx.paging.runtime.ktx)
 
 }

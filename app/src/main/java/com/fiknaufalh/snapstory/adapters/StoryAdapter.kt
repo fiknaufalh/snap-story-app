@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,29 +20,45 @@ import com.fiknaufalh.snapstory.databinding.ItemStoryCardBinding
 import com.fiknaufalh.snapstory.view.detail.DetailActivity
 
 class StoryAdapter():
-    ListAdapter<StoryItem, MyViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<StoryItem, MyViewHolder>(DIFF_CALLBACK) {
+
+    init {
+        Log.d("StoryAdapter", "Adapter initialized")
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        Log.d("StoryAdapter", "onCreateViewHolder called")
         val binding = ItemStoryCardBinding.
         inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
+    override fun getItemCount(): Int {
+        Log.d("StoryAdapter", "getItemCount called")
+        return super.getItemCount()
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        Log.d("StoryAdapter", "onBindViewHolder called for position: $position")
         val story = getItem(position)
-        holder.bind(story)
+        if (story != null) {
+            Log.d("StoryAdapter", "Binding story: ${story.name}")
+            holder.bind(story)
+        } else {
+            Log.d("StoryAdapter", "Story is null for position: $position")
+        }
     }
 
     inner class MyViewHolder(private val binding: ItemStoryCardBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(story: StoryItem) {
+            Log.d("StoryAdapter", "Binding story: ${story.name}")
             binding.storyUser.text = story.name
             binding.storyDesc.text = story.description
             Glide.with(binding.root)
                 .load(story.photoUrl)
                 .placeholder(R.color.navy)
                 .into(binding.storyImage)
-            Log.d("StoryAdapter", "Binding story: ${story.name}")
             itemView.setOnClickListener {
                 Log.d("StoryAdapter", "Clicked on story: ${story.name}")
 
@@ -65,10 +82,10 @@ class StoryAdapter():
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryItem>() {
             override fun areItemsTheSame (oldItem: StoryItem, newItem: StoryItem): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
             override fun areContentsTheSame (oldItem: StoryItem, newItem: StoryItem): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
         }
     }

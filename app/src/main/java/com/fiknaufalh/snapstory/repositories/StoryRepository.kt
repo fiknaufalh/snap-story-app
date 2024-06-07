@@ -1,10 +1,18 @@
 package com.fiknaufalh.snapstory.repositories
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.fiknaufalh.snapstory.data.StoryPagingSource
 import com.fiknaufalh.snapstory.data.pref.UserModel
 import com.fiknaufalh.snapstory.data.pref.UserPreference
 import com.fiknaufalh.snapstory.data.remote.responses.FileUploadResponse
 import com.fiknaufalh.snapstory.data.remote.responses.LoginResponse
 import com.fiknaufalh.snapstory.data.remote.responses.RegisterResponse
+import com.fiknaufalh.snapstory.data.remote.responses.StoryItem
 import com.fiknaufalh.snapstory.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -28,6 +36,22 @@ class StoryRepository private constructor(
     }
 
     fun fetchStories() = apiService.getStories()
+
+    fun fetchStoriesPaging(): LiveData<PagingData<StoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService)
+            }
+        ).liveData
+    }
+
+//    fun getStoryPagingSource(): StoryPagingSource {
+//        Log.d("StoryRepository", "getStoryPagingSource called")
+//        return StoryPagingSource(apiService)
+//    }
 
     fun fetchStoriesWithLocation() = apiService.getStoriesWithLocation()
 

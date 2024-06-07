@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
-        setErrorView(false)
+//        supportActionBar?.hide()
+//        setErrorView(false)
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -47,11 +47,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val layoutManager = LinearLayoutManager(this)
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        binding.rvStory.layoutManager = LinearLayoutManager(this)
+        val adapter = StoryAdapter()
+        binding.rvStory.adapter = adapter
 
-        binding.rvStory.layoutManager = layoutManager
-        binding.rvStory.addItemDecoration(itemDecoration)
+        viewModel.stories.observe(this) { pagingData ->
+            Log.d("MainActivity", "Data loaded: $pagingData")
+            adapter.submitData(lifecycle, pagingData)
+        }
+//        binding.rvStory.layoutManager = LinearLayoutManager(this)
+//        getData()
 
         binding.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
@@ -63,45 +68,56 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        viewModel.fetchStories()
-        viewModel.stories.observe(this) {
-            stories -> setStoryList(stories)
-            if (stories.listStory.isEmpty()) {
-                setErrorView(true)
-            } else {
-                setErrorView(false)
-            }
-        }
+//        viewModel.fetchStories()
+//        viewModel.stories.observe(this) {
+//            stories -> setStoryList(stories)
+//            if (stories.listStory.isEmpty()) {
+//                setErrorView(true)
+//            } else {
+//                setErrorView(false)
+//            }
+//        }
 
-        viewModel.isLoading.observe(this) {
-            isLoading -> showLoading(isLoading)
-        }
+//        viewModel.isLoading.observe(this) {
+//            isLoading -> showLoading(isLoading)
+//        }
+//
+//        viewModel.errorToast.observe(this) {
+//            errorToast -> errorToast?.let {
+//                if (errorToast) {
+//                    Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
+//                    viewModel.resetToast()
+//                } else {
+//                    Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
+//                    viewModel.resetToast()
+//                    setErrorView(true)
+//                }
+//            }
+//        }
 
-        viewModel.errorToast.observe(this) {
-            errorToast -> errorToast?.let {
-                if (errorToast) {
-                    Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
-                    viewModel.resetToast()
-                } else {
-                    Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
-                    viewModel.resetToast()
-                    setErrorView(true)
-                }
-            }
-        }
-
-        binding.btnRetry.setOnClickListener {
-            setErrorView(false)
-            viewModel.fetchStories()
-        }
+//        binding.btnRetry.setOnClickListener {
+//            setErrorView(false)
+////            viewModel.fetchStories()
+//            getData()
+//        }
 
         setupView()
         setupAction()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchStories()
+//    override fun onResume() {
+//        super.onResume()
+////        viewModel.fetchStories()
+//        getData()
+//    }
+
+    private fun getData() {
+        val adapter = StoryAdapter()
+        binding.rvStory.adapter = adapter
+        viewModel.stories.observe(this) {
+            Log.d("MainActivity", "Data loaded: $it")
+            adapter.submitData(lifecycle, it)
+        }
     }
 
     private fun setupView() {
@@ -123,21 +139,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStoryList(stories: StoryResponse) {
-        val adapter = StoryAdapter()
-        adapter.submitList(stories.listStory)
-        binding.rvStory.adapter = adapter
-    }
+//    private fun setStoryList(stories: StoryResponse) {
+//        val adapter = StoryAdapter()
+//        adapter.submitList(stories.listStory)
+//        binding.rvStory.adapter = adapter
+//    }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun setErrorView(isError: Boolean) {
-        val isShow = if (isError) View.VISIBLE else View.GONE
-        binding.ivError.visibility = isShow
-        binding.tvError.visibility = isShow
-        binding.btnRetry.visibility = isShow
-        binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
-    }
+//    private fun showLoading(isLoading: Boolean) {
+//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+//    }
+//
+//    private fun setErrorView(isError: Boolean) {
+//        val isShow = if (isError) View.VISIBLE else View.GONE
+//        binding.ivError.visibility = isShow
+//        binding.tvError.visibility = isShow
+//        binding.btnRetry.visibility = isShow
+//        binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
+//    }
 }

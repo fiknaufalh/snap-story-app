@@ -1,8 +1,10 @@
 package com.fiknaufalh.snapstory.data.remote.retrofit
 
+import android.util.Log
 import com.fiknaufalh.snapstory.data.remote.responses.FileUploadResponse
 import com.fiknaufalh.snapstory.data.remote.responses.LoginResponse
 import com.fiknaufalh.snapstory.data.remote.responses.RegisterResponse
+import com.fiknaufalh.snapstory.data.remote.responses.StoryItem
 import com.fiknaufalh.snapstory.data.remote.responses.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -28,6 +30,12 @@ interface ApiService {
 
     @GET("stories")
     fun getStories(): Call<StoryResponse>
+
+    @GET("stories")
+    suspend fun getStoriesPaging(
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 20
+    ): StoryResponse
 
     @GET("stories")
     fun getStoriesWithLocation(
