@@ -22,6 +22,7 @@ import com.fiknaufalh.snapstory.data.remote.responses.StoryResponse
 import com.fiknaufalh.snapstory.databinding.ActivityMainBinding
 import com.fiknaufalh.snapstory.utils.ViewModelFactory
 import com.fiknaufalh.snapstory.view.detail.DetailActivity
+import com.fiknaufalh.snapstory.view.upload.UploadActivity
 import com.fiknaufalh.snapstory.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity() {
         binding.rvStory.layoutManager = layoutManager
         binding.rvStory.addItemDecoration(itemDecoration)
 
+        binding.fabUpload.setOnClickListener {
+            val intent = Intent(this, UploadActivity::class.java)
+            startActivity(intent)
+        }
+
+        viewModel.fetchStories()
         viewModel.stories.observe(this) {
             stories -> setStoryList(stories)
         }
@@ -60,20 +67,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.errorToast.observe(this) {
-                errorToast -> errorToast?.let {
-            if (errorToast) {
-                Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
-                viewModel.resetToast()
-            } else {
-                Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
-                viewModel.resetToast()
-                setErrorView(true)
+            errorToast -> errorToast?.let {
+                if (errorToast) {
+                    Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
+                    viewModel.resetToast()
+                } else {
+                    Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
+                    viewModel.resetToast()
+                    setErrorView(true)
+                }
             }
-        }
         }
 
         setupView()
         setupAction()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchStories()
     }
 
     private fun setupView() {

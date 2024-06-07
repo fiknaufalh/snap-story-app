@@ -26,10 +26,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     private val _errorToast = MutableLiveData<Boolean?>()
     val errorToast: LiveData<Boolean?> = _errorToast
 
-    init {
-        fetchStories()
-    }
-
     fun fetchStories() {
         _isLoading.value = true
         val client = repository.fetchStories()

@@ -7,6 +7,7 @@ import com.fiknaufalh.snapstory.di.Injection
 import com.fiknaufalh.snapstory.data.MainRepository
 import com.fiknaufalh.snapstory.view.auth.AuthViewModel
 import com.fiknaufalh.snapstory.view.main.MainViewModel
+import com.fiknaufalh.snapstory.view.upload.UploadViewModel
 
 class ViewModelFactory(private val repository: MainRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -18,6 +19,9 @@ class ViewModelFactory(private val repository: MainRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(AuthViewModel::class.java) -> {
                 AuthViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(UploadViewModel::class.java) -> {
+                UploadViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
