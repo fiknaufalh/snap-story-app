@@ -1,6 +1,7 @@
 package com.fiknaufalh.snapstory.view.upload
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.fiknaufalh.snapstory.utils.ViewModelFactory
 import com.fiknaufalh.snapstory.utils.getImageUri
 import com.fiknaufalh.snapstory.utils.reduceFileImage
 import com.fiknaufalh.snapstory.utils.uriToFile
+import com.fiknaufalh.snapstory.view.main.MainActivity
 
 class UploadActivity : AppCompatActivity() {
 
@@ -114,10 +116,16 @@ class UploadActivity : AppCompatActivity() {
                             showLoading(false)
                         }
                     }
-                    finish()
+                    backToMain()
                 }
             }
         } ?: showToast(getString(R.string.empty_image_warning))
+    }
+
+    private fun backToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun showLoading(isLoading: Boolean) {

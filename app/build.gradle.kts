@@ -43,6 +43,11 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
@@ -69,5 +74,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.glide)
     implementation(libs.androidx.paging.runtime.ktx)
+
+    androidTestImplementation(libs.androidx.core.testing) //InstantTaskExecutorRule
+    androidTestImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+
+    testImplementation(libs.androidx.core.testing) // InstantTaskExecutorRule
+    testImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.android)
 
 }

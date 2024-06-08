@@ -14,9 +14,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.fiknaufalh.snapstory.R
+import com.fiknaufalh.snapstory.adapters.LoadingStateAdapter
 import com.fiknaufalh.snapstory.adapters.StoryAdapter
 import com.fiknaufalh.snapstory.data.remote.responses.StoryResponse
 import com.fiknaufalh.snapstory.databinding.ActivityMainBinding
@@ -25,6 +30,8 @@ import com.fiknaufalh.snapstory.view.detail.DetailActivity
 import com.fiknaufalh.snapstory.view.maps.MapsActivity
 import com.fiknaufalh.snapstory.view.upload.UploadActivity
 import com.fiknaufalh.snapstory.view.welcome.WelcomeActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
@@ -37,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        supportActionBar?.hide()
-//        setErrorView(false)
+        supportActionBar?.hide()
+        setErrorView(false)
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -48,15 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rvStory.layoutManager = LinearLayoutManager(this)
-        val adapter = StoryAdapter()
-        binding.rvStory.adapter = adapter
-
-        viewModel.stories.observe(this) { pagingData ->
-            Log.d("MainActivity", "Data loaded: $pagingData")
-            adapter.submitData(lifecycle, pagingData)
-        }
-//        binding.rvStory.layoutManager = LinearLayoutManager(this)
-//        getData()
+        getData()
 
         binding.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
@@ -68,54 +67,40 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        viewModel.fetchStories()
-//        viewModel.stories.observe(this) {
-//            stories -> setStoryList(stories)
-//            if (stories.listStory.isEmpty()) {
-//                setErrorView(true)
-//            } else {
-//                setErrorView(false)
-//            }
-//        }
+        observeErrorView()
 
-//        viewModel.isLoading.observe(this) {
-//            isLoading -> showLoading(isLoading)
-//        }
-//
-//        viewModel.errorToast.observe(this) {
-//            errorToast -> errorToast?.let {
-//                if (errorToast) {
-//                    Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
-//                    viewModel.resetToast()
-//                } else {
-//                    Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
-//                    viewModel.resetToast()
-//                    setErrorView(true)
-//                }
-//            }
-//        }
+        viewModel.isLoading.observe(this) {
+            isLoading -> showLoading(isLoading)
+        }
 
-//        binding.btnRetry.setOnClickListener {
-//            setErrorView(false)
-////            viewModel.fetchStories()
-//            getData()
-//        }
+        viewModel.errorToast.observe(this) {
+            errorToast -> errorToast?.let {
+                if (errorToast) {
+                    Toast.makeText(this, "Success to retrieve the data", Toast.LENGTH_SHORT).show()
+                    viewModel.resetToast()
+                } else {
+                    Toast.makeText(this, "Failed to retrieve the data", Toast.LENGTH_SHORT).show()
+                    viewModel.resetToast()
+                    setErrorView(true)
+                }
+            }
+        }
+
+        binding.btnRetry.setOnClickListener {
+            setErrorView(false)
+            getData()
+        }
 
         setupView()
         setupAction()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-////        viewModel.fetchStories()
-//        getData()
-//    }
-
     private fun getData() {
         val adapter = StoryAdapter()
-        binding.rvStory.adapter = adapter
+        binding.rvStory.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter { adapter.retry() }
+        )
         viewModel.stories.observe(this) {
-            Log.d("MainActivity", "Data loaded: $it")
             adapter.submitData(lifecycle, it)
         }
     }
@@ -139,21 +124,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setStoryList(stories: StoryResponse) {
-//        val adapter = StoryAdapter()
-//        adapter.submitList(stories.listStory)
-//        binding.rvStory.adapter = adapter
-//    }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
-//    private fun showLoading(isLoading: Boolean) {
-//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-//    }
-//
-//    private fun setErrorView(isError: Boolean) {
-//        val isShow = if (isError) View.VISIBLE else View.GONE
-//        binding.ivError.visibility = isShow
-//        binding.tvError.visibility = isShow
-//        binding.btnRetry.visibility = isShow
-//        binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
-//    }
+    private fun setErrorView(isError: Boolean) {
+        val isShow = if (isError) View.VISIBLE else View.GONE
+        binding.ivError.visibility = isShow
+        binding.tvError.visibility = isShow
+        binding.btnRetry.visibility = isShow
+        binding.rvStory.visibility = if (isError) View.GONE else View.VISIBLE
+    }
+
+    private fun observeErrorView() {
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = StoryAdapter.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            mainDispatcher = Dispatchers.Main
+        )
+
+        viewModel.stories.observe(this) { stories ->
+            differ.submitData(lifecycle, stories)
+        }
+
+        differ.addLoadStateListener { loadState ->
+            if (differ.snapshot().isEmpty()) {
+                setErrorView(true)
+            } else {
+                setErrorView(false)
+            }
+        }
+    }
+}
+
+val noopListUpdateCallback = object : ListUpdateCallback {
+    override fun onInserted(position: Int, count: Int) {}
+    override fun onRemoved(position: Int, count: Int) {}
+    override fun onMoved(fromPosition: Int, toPosition: Int) {}
+    override fun onChanged(position: Int, count: Int, payload: Any?) {}
 }

@@ -4,7 +4,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -56,7 +55,6 @@ class RegisterActivity : AppCompatActivity() {
             val title = "Register"
 
             viewModel.register(name, email, password).observe(this) { response ->
-                Log.d("Register", response.toString())
                 val message = if (!response.error!!) {
                     resources.getString(R.string.register_success)
                 } else {

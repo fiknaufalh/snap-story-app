@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -41,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this) {
             loading -> showLoading(loading)
-            Log.d("loading", loading.toString())
         }
     }
 
@@ -82,7 +80,6 @@ class LoginActivity : AppCompatActivity() {
             var message = ""
 
             viewModel.login(email, password).observe(this) { response ->
-                Log.d("Login", response.toString())
                 if (!response.error!!) {
                     message = resources.getString(R.string.login_success)
                     viewModel.saveSession(UserModel(email, response.loginResult?.token.toString()))

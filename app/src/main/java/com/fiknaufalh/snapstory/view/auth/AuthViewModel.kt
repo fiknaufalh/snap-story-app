@@ -59,9 +59,4 @@ class AuthViewModel(private val repository: UserRepository) : ViewModel() {
         return responseLiveData
     }
 
-    fun logout() {
-        viewModelScope.launch {
-            repository.logout()
-        }
-    }
 }

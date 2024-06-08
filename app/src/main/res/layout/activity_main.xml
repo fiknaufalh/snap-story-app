@@ -86,41 +86,41 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/ivError"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:src="@drawable/baseline_retrieve_failed"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:importantForAccessibility="no" />-->
+        <ImageView
+            android:id="@+id/ivError"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/baseline_retrieve_failed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:importantForAccessibility="no" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/tvError"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/poppins_medium"-->
-<!--            android:text="@string/failed_retrieve_msg"-->
-<!--            android:textColor="@color/midnight"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ivError" />-->
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/failed_retrieve_msg"
+            android:textColor="@color/midnight"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivError" />
 
-<!--        <Button-->
-<!--            android:id="@+id/btnRetry"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tvError"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:text="@string/retry"-->
-<!--            android:fontFamily="@font/poppins_bold"-->
-<!--            android:textSize="16sp"-->
-<!--            android:layout_marginHorizontal="64dp" />-->
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvError"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/retry"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            android:layout_marginHorizontal="64dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabUpload"
