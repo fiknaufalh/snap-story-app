@@ -88,7 +88,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnRetry.setOnClickListener {
             setErrorView(false)
-            getData()
+            viewModel.stories.observe(this) {
+                getData()
+            }
         }
 
         setupView()

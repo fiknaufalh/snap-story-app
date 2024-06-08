@@ -110,13 +110,13 @@ class UploadActivity : AppCompatActivity() {
                         false -> {
                             showToast(result.message)
                             showLoading(false)
+                            backToMain()
                         }
                         true -> {
                             showToast(result.message)
                             showLoading(false)
                         }
                     }
-                    backToMain()
                 }
             }
         } ?: showToast(getString(R.string.empty_image_warning))
